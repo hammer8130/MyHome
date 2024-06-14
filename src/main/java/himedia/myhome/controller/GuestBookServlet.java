@@ -22,13 +22,12 @@ public class GuestBookServlet extends BaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		String actionName = req.getParameter("action");
-		
 		if("list".equals(actionName)) {
-			GuestBookDAOImpl dao = new GuestBookDAOImpl(id, pw);
+			GuestBookDAO dao = new GuestBookDAOImpl("himedia", "himedia");
 			req.setAttribute("list", dao.getlist());
 			
 //			다음에 내가 처리할 요청/응답을 찾는다.
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp");
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/guestbook/index.jsp");
 			rd.forward(req, resp);
 		}
 	}
@@ -37,17 +36,18 @@ public class GuestBookServlet extends BaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		String actionName = req.getParameter("a");
+		System.out.println("doPost : " + actionName);
 		
 		if("deleteform".equals(actionName)) {
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp");
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/guestbook/deleteform.jsp");
 			rd.forward(req, resp);	
 		}else if("delete".equals(actionName)) {
-			GuestBookDAOImpl dao = new GuestBookDAOImpl(id, pw);
+			GuestBookDAO dao = new GuestBookDAOImpl(id, pw);
 			Long no = Long.parseLong(req.getParameter("no"));
 			dao.deletelist(no);
 			
 			req.setAttribute("list", dao.getlist());
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp");
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/guestbook/delete.jsp");
 			rd.forward(req, resp);
 		}else {
 			System.out.println("비밀번호가 일치하지 않습니다.");
@@ -55,17 +55,16 @@ public class GuestBookServlet extends BaseServlet {
 		
 		if("add".equals(actionName)) {
 			GuestBookDAO dao = new GuestBookDAOImpl(id, pw);
-			GuestBookVO vo = new GuestBookVO();
 			String name = req.getParameter("name");
 			String pass = req.getParameter("pass");
 			String content = req.getParameter("content");
 			
+			GuestBookVO vo = new GuestBookVO(name, pass, content);
 			dao.insertlist(vo);
 			
 			req.setAttribute("list", dao.getlist());
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/index.jsp");
-			rd.forward(req, resp);
-			
+			RequestDispatcher rd = getServletContext().getRequestDispatcher("/WEB-INF/views/guestbook/index.jsp");
+			rd.forward(req, resp);			
 		}
 		else {
 			

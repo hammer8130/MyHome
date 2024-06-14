@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="com.woo.dao.GuestBookDAO"%>
 <%@page import="com.woo.dao.GuestBookDAOImpl"%>
@@ -14,17 +15,11 @@ String dbpass = context.getInitParameter("dbpass");
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
 <title>방명록</title>
 </head>
 <body>
-<%
-	GuestBookDAO dao = new GuestBookDAOImpl(dbuser,dbpass);
-	List<GuestBookVO> list = dao.getlist();
-	
-	
-%>
-
-	<form action="<%=request.getContextPath()%>/gl" method="POST">
+	<form action="<%=request.getContextPath()%>/gb" method="POST">
 	<table border=1 width=500>
 		<tr>
 			<td>이름</td><td><input type="text" name="name"></td>
@@ -38,7 +33,12 @@ String dbpass = context.getInitParameter("dbpass");
 			</td>
 		</tr>
 	</table>
+	</form>
+	
 	<%
+	List<GuestBookVO> list = new ArrayList<GuestBookVO>();
+	list = (List<GuestBookVO>)request.getAttribute("list");
+	
 	for(GuestBookVO vo : list){
 		int i =0;
 		i++;
@@ -49,20 +49,17 @@ String dbpass = context.getInitParameter("dbpass");
 			<td>[i]</td>
 			<td><%=vo.getName() %></td>
 			<td><%=vo.getDate() %></td>
-			<%-- <form action="<%=request.getContextPath()%>/guestbook/delete.jsp" method="POST">
-			<input type="hidden" name="no" value="<%=vo.getNo()%>"> --%>
 			<td>
-				<a href="<%=request.getContextPath()%>/gb?no=<%=vo.getNo()%>">삭제</a>
+				<a href="<%=request.getContextPath()%>/gb?a=delete">삭제</a>
 			</td>
-			</form>
 		</tr>
 		<tr>
 			<td colspan=4><%=vo.getContent() %></td>
-		</tr>
+		</tr> 
 	</table>
 	
 	
-	</form>
+
 	<br/>
 <% 
 	}

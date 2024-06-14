@@ -139,7 +139,8 @@ public class UsersDAOImpl implements UsersDAO{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		UserVO vo = new UserVO();
+		UserVO vo = null;
+//		UserVO vo = new UserVO();
 		
 		try {
 			conn=getConn();

@@ -24,6 +24,7 @@ public class GuestBookDAOImpl implements GuestBookDAO {
 	
 	public Connection getconnection() throws SQLException{
 		Connection conn = null;
+		System.out.println("getConnection : " + dbuser);
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
